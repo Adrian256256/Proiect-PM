@@ -93,7 +93,11 @@ unsigned long remotePressedTime = 0;
 void check_remote() {
     // debounce time for remote control (ms)
     static const int CHECK_REMOTE_DEBOUNCE = 1000;
-    // debounce time for remote control
+    // coduri pentru telecomandă IR
+    static const unsigned long IR_CODE_PAUSE = 0xFFC23D;
+    static const unsigned long IR_CODE_CONTINUOUS = 0xFFA857;
+    static const unsigned long IR_CODE_STOP = 0xFFE01F;
+
     if (millis() - remotePressedTime < CHECK_REMOTE_DEBOUNCE) {
         return;
     }
@@ -102,8 +106,8 @@ void check_remote() {
         Serial.println(results.value, HEX);
         remotePressedTime = millis();
 
-        // FFC23D is for pause
-        if (results.value == 0xFFC23D) {
+        // IR_CODE_PAUSE is for pause
+        if (results.value == IR_CODE_PAUSE) {
             if (currentState == PAUSED) {
                 currentState = RESUMING;
                 stateStartTime = millis();
@@ -124,8 +128,8 @@ void check_remote() {
             }
         }
 
-        // FFA857 is for continuous running
-        if (results.value == 0xFFA857) {
+        // IR_CODE_CONTINUOUS is for continuous running
+        if (results.value == IR_CODE_CONTINUOUS) {
             currentState = CONTINUOUS_RUNNING;
             // turn on the motor
             digitalWrite(MOTOR_PIN, HIGH);
@@ -136,8 +140,8 @@ void check_remote() {
             lcd.print("Running...");
             Serial.println("Transition: any state -> CONTINUOUS_RUNNING");
         }
-        // FFE01F is for stop continuous running
-        if (results.value == 0xFFE01F) {
+        // IR_CODE_STOP is for stop continuous running
+        if (results.value == IR_CODE_STOP) {
             currentState = LISTENING;
             // turn off the motor
             digitalWrite(MOTOR_PIN, LOW);
