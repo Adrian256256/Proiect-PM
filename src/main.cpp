@@ -212,7 +212,6 @@ void handleResuming() {
 
 void handlePaused() {
     // do nothing, just wait for the remote control to be pressed again
-    //Serial.println("System is PAUSED");
 }
 
 void handleCalibrating() {
@@ -316,7 +315,6 @@ void handleCheckingDistance() {
     } else {
         // turn on the led and buzzer shortly before starting the motor
         digitalWrite(LED_PIN, HIGH);
-        // if you have a buzzer pin, add here: digitalWrite(BUZZER_PIN, HIGH);
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Motor running!");
@@ -356,7 +354,6 @@ void handleMotorRunning() {
 
 void handleContinuousRunning() {
     // do nothing, just wait for the remote control to be pressed again
-    //Serial.println("System is in CONTINUOUS_RUNNING mode");
 }
 
 long microsecondsToCentimeters(long microseconds) {
